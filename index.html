@@ -1,0 +1,153 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Square Table Cells</title>
+    <script src="https://code.jquery.com/jquery-3.7.1.js" integrity="sha256-eKhayi8LEQwp4NKxN+CfCh+3qOVUtJn3QNZ0TciWLP4=" crossorigin="anonymous"></script>
+    <script src="jquery.confetti.js"></script>
+
+    <style>
+        /* Style for the dotted grey borders */
+        table {
+            border-collapse: collapse;
+        }
+        td {
+            width: 100px;             /* Fixed width to make cells square */
+            height: 100px;            /* Fixed height to make cells square */
+            border: 1px dotted #ddd;
+            padding: 0;
+            text-align: center;
+            font-size: 56pt;
+        }
+
+        /* Style for the solid black line between rows 4 and 5 */
+        tr:nth-child(3) td {
+            border-bottom: 2px solid black;
+        }
+        .cursor{
+            background-color: yellow;
+        }
+        #done{
+            width: 300px;             /* Fixed width to make cells square */
+            height: 100px;            /* Fixed height to make cells square */
+            font-size: 48pt;
+        }
+        #reloadButton{
+            width: 150px;             /* Fixed width to make cells square */
+            height: 50px;            /* Fixed height to make cells square */
+            font-size: 24pt;
+        }
+    </style>
+</head>
+<body>
+<center>
+<table>
+    <tbody>
+        <tr>
+            <td id="1x1"></td>
+            <td id="1x2"></td>
+            <td id="1x3"></td>
+            <td id="1x4"></td>
+            <td id="1x5"></td>
+        </tr>
+        <tr>
+            <td id="2x1"></td>
+            <td id="2x2"></td>
+            <td id="2x3"></td>
+            <td id="2x4"></td>
+            <td id="2x5"></td>
+        </tr>
+        <tr>
+            <td id="3x1"></td>
+            <td id="3x2"></td>
+            <td id="3x3"></td>
+            <td id="3x4"></td>
+            <td id="3x5"></td>
+        </tr>
+        <tr>
+            <td id="4x1"></td>
+            <td id="4x2"></td>
+            <td id="4x3"></td>
+            <td id="4x4"></td>
+            <td class="cursor" id="4x5"></td>
+        </tr>
+    </tbody>
+    
+</table>
+<br/><br/><br/>
+<button id="done">Gotowe</button><br/>
+<button id="reloadButton">Nowy</button>
+</center>
+<script>
+
+  $(document).ready(function(){
+      $("#reloadButton").click(function() {
+                location.reload(); // Reload the current page
+      });
+      // const randomBinary = Math.round(Math.random());
+      // if (randomBinary == 0){
+      //     var sign = "-";
+      //     console.log(sign);
+      // }
+      // if (randomBinary == 1){
+      //     var sign = "+";
+      //     console.log(sign);
+      // }
+      var sign = "+";
+      $("td#3x1").text(sign);
+      const n1 = Math.floor(Math.random() * 1000);
+      const n2 = Math.floor(Math.random() * (n1 + 1));
+      console.log(n1.toString().split('').reverse());
+      console.log(n1);
+      var x = 2;
+      var y = 5;
+      $.each(n1.toString().split('').reverse(), function(index, value){    
+          $("td#" + x + "x" + y).text(value);
+          y = y - 1;
+      });
+      var x = 3;
+      var y = 5;
+      $.each(n2.toString().split('').reverse(), function(index, value){    
+          $("td#" + x + "x" + y).text(value);
+          y = y - 1;
+      });
+      const sequence = ["4x5", "1x4", "4x4", "1x3", "4x3", "4x2"];
+      var m = 0;
+      $(document).keydown(function(event){
+          console.log(event.key);
+          $("td#"+ sequence[m]).text(event.key);
+          m++;
+          $("td").removeClass("cursor");
+          $("td#"+ sequence[m]).addClass("cursor");
+          
+      });
+      $("#done").click(function(){
+          var n3 = $("td#4x2").text().toString() + $("td#4x3").text().toString() + $("td#4x4").text().toString() + $("td#4x5").text().toString();
+          n3 = parseInt(n3, 10);
+          if (eval(n1 + sign + n2) == n3){
+              console.log("OK");
+              $(document).ready($.confetti.init());
+          }else{
+              console.log("FAIL");
+              $("td").fadeOut("slow");
+              $("#done").fadeOut("slow");
+          }
+
+
+      });
+      // $.each(sequence, function(index, value){
+      //     $("td").removeClass("cursor");
+      //     $("td#"+ value).addClass("cursor");
+      //});
+      
+
+  });
+  
+
+
+        
+</script>
+
+</body>
+</html>
